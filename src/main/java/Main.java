@@ -33,16 +33,17 @@ public class Main {
                 Robot robot = new Robot(grid, x, y, orientation);
                 robot.takeCommands(commands);
 
-                System.out.println("--------------");
+                System.out.println("---Robot Status---");
                 System.out.println(robot.getCurrentStatus());
 
-                System.out.println("Continue?(y/n):");
+                System.out.print("Continue?(y/n):");
                 String shouldContinue = br.readLine();
 
                 if (!shouldContinue.equals("y")) {
                     System.out.println("See you!");
                     System.exit(0);
                 }
+                System.out.println();
             }
 
         } catch (IOException e) {
