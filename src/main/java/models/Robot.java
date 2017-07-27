@@ -7,47 +7,75 @@ public class Robot {
     private int y;
     private Orientation orientation;
 
+    private int lastSeenX;
+    private int lastSeenY;
+    private Orientation lastSeenOrientation;
+
     public Robot(Grid grid, int x, int y, Orientation orientation) {
         this.grid = grid;
         this.x = x;
         this.y = y;
         this.orientation = orientation;
+
+        this.lastSeenX = this.x;
+        this.lastSeenY = this.y;
+        this.lastSeenOrientation = this.orientation;
     }
 
-    public int getX() {
+    public int getLatestX() {
+        if (isLost()) {
+            return lastSeenX;
+        }
         return x;
     }
 
-    public int getY() {
+    public int getLatestY() {
+        if (isLost()) {
+            return lastSeenY;
+        }
         return y;
     }
 
-    public Orientation getOrientation() {
+    public Orientation getLatestOrientation() {
+        if (isLost()) {
+            return lastSeenOrientation;
+        }
         return orientation;
     }
 
     public void rotateLeft() {
-        this.orientation = this.orientation.rotateLeft();
+        if (!isLost()) {
+            this.orientation = this.orientation.rotateLeft();
+        }
     }
 
     public void rotateRight() {
-        this.orientation = this.orientation.rotateRight();
+        if (!isLost()) {
+            this.orientation = this.orientation.rotateRight();
+        }
     }
 
     public void moveForward() {
-        switch (this.orientation) {
-            case N:
-                this.y++;
-                break;
-            case S:
-                this.y--;
-                break;
-            case E:
-                this.x++;
-                break;
-            case W:
-                this.x--;
-                break;
+        if (!isLost()) {
+            switch (this.orientation) {
+                case N:
+                    this.y++;
+                    break;
+                case S:
+                    this.y--;
+                    break;
+                case E:
+                    this.x++;
+                    break;
+                case W:
+                    this.x--;
+                    break;
+            }
+        }
+        if (!isLost()) {
+            this.lastSeenX = this.x;
+            this.lastSeenY = this.y;
+            this.lastSeenOrientation = this.orientation;
         }
     }
 

@@ -9,35 +9,51 @@ public class RobotTest {
     public void shouldSetInitialStatusOfRobot() {
         Grid grid = new Grid(1, 1);
         Robot robot = new Robot(grid, 1, 1, Orientation.E);
-        assertEquals(1, robot.getX());
-        assertEquals(1, robot.getY());
-        assertEquals(Orientation.E, robot.getOrientation());
+        assertEquals(1, robot.getLatestX());
+        assertEquals(1, robot.getLatestY());
+        assertEquals(Orientation.E, robot.getLatestOrientation());
     }
 
     @Test
-    public void shouldRotateLeft() {
+    public void shouldRotateLeftWhenFacingEast() {
         Grid grid = new Grid(1, 1);
         Robot robot = new Robot(grid, 1, 1, Orientation.E);
         robot.rotateLeft();
-        assertEquals(Orientation.N, robot.getOrientation());
+        assertEquals(Orientation.N, robot.getLatestOrientation());
     }
 
     @Test
-    public void shouldRotateRight() {
+    public void shouldRotateLeftWhenFacingNorth() {
+        Grid grid = new Grid(1, 1);
+        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        robot.rotateLeft();
+        assertEquals(Orientation.W, robot.getLatestOrientation());
+    }
+
+    @Test
+    public void shouldRotateRightWhenFacingEast() {
         Grid grid = new Grid(1, 1);
         Robot robot = new Robot(grid, 1, 1, Orientation.E);
         robot.rotateRight();
-        assertEquals(Orientation.S, robot.getOrientation());
+        assertEquals(Orientation.S, robot.getLatestOrientation());
+    }
+
+    @Test
+    public void shouldRotateRightWhenFacingWest() {
+        Grid grid = new Grid(1, 1);
+        Robot robot = new Robot(grid, 1, 1, Orientation.W);
+        robot.rotateRight();
+        assertEquals(Orientation.N, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldMoveForwardWhenFacingNorth() {
-        Grid grid = new Grid(1, 1);
+        Grid grid = new Grid(3, 3);
         Robot robot = new Robot(grid, 1, 1, Orientation.N);
         robot.moveForward();
-        assertEquals(1, robot.getX());
-        assertEquals(2, robot.getY());
-        assertEquals(Orientation.N, robot.getOrientation());
+        assertEquals(1, robot.getLatestX());
+        assertEquals(2, robot.getLatestY());
+        assertEquals(Orientation.N, robot.getLatestOrientation());
     }
 
     @Test
@@ -45,19 +61,19 @@ public class RobotTest {
         Grid grid = new Grid(1, 1);
         Robot robot = new Robot(grid, 1, 1, Orientation.S);
         robot.moveForward();
-        assertEquals(1, robot.getX());
-        assertEquals(0, robot.getY());
-        assertEquals(Orientation.S, robot.getOrientation());
+        assertEquals(1, robot.getLatestX());
+        assertEquals(0, robot.getLatestY());
+        assertEquals(Orientation.S, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldMoveForwardWhenFacingEast() {
-        Grid grid = new Grid(1, 1);
+        Grid grid = new Grid(3, 3);
         Robot robot = new Robot(grid, 1, 1, Orientation.E);
         robot.moveForward();
-        assertEquals(2, robot.getX());
-        assertEquals(1, robot.getY());
-        assertEquals(Orientation.E, robot.getOrientation());
+        assertEquals(2, robot.getLatestX());
+        assertEquals(1, robot.getLatestY());
+        assertEquals(Orientation.E, robot.getLatestOrientation());
     }
 
     @Test
@@ -65,9 +81,9 @@ public class RobotTest {
         Grid grid = new Grid(1, 1);
         Robot robot = new Robot(grid, 1, 1, Orientation.W);
         robot.moveForward();
-        assertEquals(0, robot.getX());
-        assertEquals(1, robot.getY());
-        assertEquals(Orientation.W, robot.getOrientation());
+        assertEquals(0, robot.getLatestX());
+        assertEquals(1, robot.getLatestY());
+        assertEquals(Orientation.W, robot.getLatestOrientation());
     }
 
     @Test
@@ -84,6 +100,20 @@ public class RobotTest {
         Robot robot = new Robot(grid, 1, 1, Orientation.N);
         robot.moveForward();
         assertFalse(robot.isLost());
+    }
+
+    @Test
+    public void shouldIgnoreSubsequentCommandAfterLost() {
+        Grid grid = new Grid(1, 1);
+        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        robot.moveForward();
+        assertTrue(robot.isLost());
+
+        robot.rotateLeft();
+        robot.moveForward();
+        assertEquals(1, robot.getLatestX());
+        assertEquals(1, robot.getLatestY());
+        assertEquals(Orientation.N, robot.getLatestOrientation());
     }
 
 }
