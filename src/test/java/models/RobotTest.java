@@ -148,4 +148,42 @@ public class RobotTest {
         robot.moveForward();
         assertFalse(robot.isLost());
     }
+
+    @Test
+    public void shouldTakeCommands() {
+        Grid grid = new Grid(5, 3);
+        Robot robot = new Robot(grid, 1, 1, E);
+        robot.takeCommands("RFRFRFRF");
+        assertEquals(1, robot.getLatestX());
+        assertEquals(1, robot.getLatestY());
+        assertEquals(E, robot.getLatestOrientation());
+    }
+
+    @Test
+    public void shouldTakeCommandsAndIgnoreAfterLost() {
+        Grid grid = new Grid(5, 3);
+        Robot robot = new Robot(grid, 3, 2, N);
+        robot.takeCommands("FRRFLLFFRRFLL");
+        assertEquals(3, robot.getLatestX());
+        assertEquals(3, robot.getLatestY());
+        assertEquals(N, robot.getLatestOrientation());
+        assertTrue(robot.isLost());
+    }
+
+    @Test
+    public void shouldTakeCommandsWithScent() {
+        Grid grid = new Grid(5, 3);
+        Robot robot = new Robot(grid, 3, 2, N);
+        robot.takeCommands("FRRFLLFFRRFLL");
+        assertEquals(3, robot.getLatestX());
+        assertEquals(3, robot.getLatestY());
+        assertEquals(N, robot.getLatestOrientation());
+        assertTrue(robot.isLost());
+
+        robot = new Robot(grid, 0, 3, W);
+        robot.takeCommands("LLFFFLFLFL");
+        assertEquals(2, robot.getLatestX());
+        assertEquals(3, robot.getLatestY());
+        assertEquals(S, robot.getLatestOrientation());
+    }
 }

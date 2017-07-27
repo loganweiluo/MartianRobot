@@ -92,6 +92,22 @@ public class Robot {
         return false;
     }
 
+    public void takeCommands(String commands) {
+        for (Character command : commands.toCharArray()) {
+            switch (command) {
+                case 'R':
+                    rotateRight();
+                    break;
+                case 'L':
+                    rotateLeft();
+                    break;
+                case 'F':
+                    moveForward();
+                    break;
+            }
+        }
+    }
+
     private boolean hasScent() {
         Set<Scent> scents = grid.getScents();
         boolean hasScent = false;
@@ -103,4 +119,5 @@ public class Robot {
         }
         return hasScent;
     }
+
 }
