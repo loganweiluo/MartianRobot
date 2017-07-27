@@ -2,11 +2,13 @@ package models;
 
 public class Robot {
 
+    private Grid grid;
     private int x;
     private int y;
     private Orientation orientation;
 
-    public Robot(int x, int y, Orientation orientation) {
+    public Robot(Grid grid, int x, int y, Orientation orientation) {
+        this.grid = grid;
         this.x = x;
         this.y = y;
         this.orientation = orientation;
@@ -47,5 +49,12 @@ public class Robot {
                 this.x--;
                 break;
         }
+    }
+
+    public boolean isLost() {
+        if (this.x > grid.getLength() || this.x < 0 || this.y > grid.getWidth() || this.y < 0) {
+            return true;
+        }
+        return false;
     }
 }
