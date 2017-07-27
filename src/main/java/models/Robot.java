@@ -108,6 +108,19 @@ public class Robot {
         }
     }
 
+    public String getCurrentStatus() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getLatestX());
+        builder.append(" ");
+        builder.append(getLatestY());
+        builder.append(" ");
+        builder.append(getLatestOrientation());
+        if (isLost()) {
+            builder.append(" LOST");
+        }
+        return builder.toString();
+    }
+
     private boolean hasScent() {
         Set<Scent> scents = grid.getScents();
         boolean hasScent = false;
