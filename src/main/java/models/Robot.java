@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Set;
+
 public class Robot {
 
     private Grid grid;
@@ -56,28 +58,30 @@ public class Robot {
     }
 
     public void moveForward() {
-        if (!isLost()) {
-            switch (this.orientation) {
-                case N:
-                    this.y++;
-                    break;
-                case S:
-                    this.y--;
-                    break;
-                case E:
-                    this.x++;
-                    break;
-                case W:
-                    this.x--;
-                    break;
+        if (!hasScent()) {
+            if (!isLost()) {
+                switch (this.orientation) {
+                    case N:
+                        this.y++;
+                        break;
+                    case S:
+                        this.y--;
+                        break;
+                    case E:
+                        this.x++;
+                        break;
+                    case W:
+                        this.x--;
+                        break;
+                }
             }
-        }
-        if (!isLost()) {
-            this.lastSeenX = this.x;
-            this.lastSeenY = this.y;
-            this.lastSeenOrientation = this.orientation;
-        } else {
-            grid.addScent(new Scent(lastSeenX, lastSeenY, lastSeenOrientation));
+            if (!isLost()) {
+                this.lastSeenX = this.x;
+                this.lastSeenY = this.y;
+                this.lastSeenOrientation = this.orientation;
+            } else {
+                grid.addScent(new Scent(lastSeenX, lastSeenY, lastSeenOrientation));
+            }
         }
     }
 
@@ -86,5 +90,17 @@ public class Robot {
             return true;
         }
         return false;
+    }
+
+    private boolean hasScent() {
+        Set<Scent> scents = grid.getScents();
+        boolean hasScent = false;
+        for (Scent scent : scents) {
+            if (scent.getX() == x && scent.getY() == y && scent.getOrientation().equals(orientation)) {
+                hasScent = true;
+                break;
+            }
+        }
+        return hasScent;
     }
 }

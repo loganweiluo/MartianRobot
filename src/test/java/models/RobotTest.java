@@ -133,4 +133,19 @@ public class RobotTest {
         assertThat(scents, hasItem(samePropertyValuesAs(new Scent(1, 1, N))));
     }
 
+    @Test
+    public void shouldNotFallOffGridWithScentForTheSameCommand() {
+        Grid grid = new Grid(3, 3);
+        Robot robot = new Robot(grid, 1, 3, N);
+        robot.moveForward();
+        assertTrue(robot.isLost());
+
+        Set<Scent> scents = grid.getScents();
+        assertEquals(1, scents.size());
+        assertThat(scents, hasItem(samePropertyValuesAs(new Scent(1, 3, N))));
+
+        robot = new Robot(grid, 1, 3, N);
+        robot.moveForward();
+        assertFalse(robot.isLost());
+    }
 }
