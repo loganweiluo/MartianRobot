@@ -76,6 +76,8 @@ public class Robot {
             this.lastSeenX = this.x;
             this.lastSeenY = this.y;
             this.lastSeenOrientation = this.orientation;
+        } else {
+            grid.addScent(new Scent(lastSeenX, lastSeenY, lastSeenOrientation));
         }
     }
 

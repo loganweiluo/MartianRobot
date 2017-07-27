@@ -2,94 +2,99 @@ package models;
 
 import org.junit.Test;
 
+import java.util.Set;
+
+import static models.Orientation.*;
+import static org.hamcrest.beans.SamePropertyValuesAs.samePropertyValuesAs;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.junit.Assert.*;
 
 public class RobotTest {
     @Test
     public void shouldSetInitialStatusOfRobot() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.E);
+        Robot robot = new Robot(grid, 1, 1, E);
         assertEquals(1, robot.getLatestX());
         assertEquals(1, robot.getLatestY());
-        assertEquals(Orientation.E, robot.getLatestOrientation());
+        assertEquals(E, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldRotateLeftWhenFacingEast() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.E);
+        Robot robot = new Robot(grid, 1, 1, E);
         robot.rotateLeft();
-        assertEquals(Orientation.N, robot.getLatestOrientation());
+        assertEquals(N, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldRotateLeftWhenFacingNorth() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        Robot robot = new Robot(grid, 1, 1, N);
         robot.rotateLeft();
-        assertEquals(Orientation.W, robot.getLatestOrientation());
+        assertEquals(W, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldRotateRightWhenFacingEast() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.E);
+        Robot robot = new Robot(grid, 1, 1, E);
         robot.rotateRight();
-        assertEquals(Orientation.S, robot.getLatestOrientation());
+        assertEquals(S, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldRotateRightWhenFacingWest() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.W);
+        Robot robot = new Robot(grid, 1, 1, W);
         robot.rotateRight();
-        assertEquals(Orientation.N, robot.getLatestOrientation());
+        assertEquals(N, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldMoveForwardWhenFacingNorth() {
         Grid grid = new Grid(3, 3);
-        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        Robot robot = new Robot(grid, 1, 1, N);
         robot.moveForward();
         assertEquals(1, robot.getLatestX());
         assertEquals(2, robot.getLatestY());
-        assertEquals(Orientation.N, robot.getLatestOrientation());
+        assertEquals(N, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldMoveForwardWhenFacingSouth() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.S);
+        Robot robot = new Robot(grid, 1, 1, S);
         robot.moveForward();
         assertEquals(1, robot.getLatestX());
         assertEquals(0, robot.getLatestY());
-        assertEquals(Orientation.S, robot.getLatestOrientation());
+        assertEquals(S, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldMoveForwardWhenFacingEast() {
         Grid grid = new Grid(3, 3);
-        Robot robot = new Robot(grid, 1, 1, Orientation.E);
+        Robot robot = new Robot(grid, 1, 1, E);
         robot.moveForward();
         assertEquals(2, robot.getLatestX());
         assertEquals(1, robot.getLatestY());
-        assertEquals(Orientation.E, robot.getLatestOrientation());
+        assertEquals(E, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldMoveForwardWhenFacingWest() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.W);
+        Robot robot = new Robot(grid, 1, 1, W);
         robot.moveForward();
         assertEquals(0, robot.getLatestX());
         assertEquals(1, robot.getLatestY());
-        assertEquals(Orientation.W, robot.getLatestOrientation());
+        assertEquals(W, robot.getLatestOrientation());
     }
 
     @Test
     public void shouldDetectLost() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        Robot robot = new Robot(grid, 1, 1, N);
         robot.moveForward();
         assertTrue(robot.isLost());
     }
@@ -97,7 +102,7 @@ public class RobotTest {
     @Test
     public void shouldReturnFalseWhenNotLost() {
         Grid grid = new Grid(3, 3);
-        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        Robot robot = new Robot(grid, 1, 1, N);
         robot.moveForward();
         assertFalse(robot.isLost());
     }
@@ -105,7 +110,7 @@ public class RobotTest {
     @Test
     public void shouldIgnoreSubsequentCommandAfterLost() {
         Grid grid = new Grid(1, 1);
-        Robot robot = new Robot(grid, 1, 1, Orientation.N);
+        Robot robot = new Robot(grid, 1, 1, N);
         robot.moveForward();
         assertTrue(robot.isLost());
 
@@ -113,7 +118,19 @@ public class RobotTest {
         robot.moveForward();
         assertEquals(1, robot.getLatestX());
         assertEquals(1, robot.getLatestY());
-        assertEquals(Orientation.N, robot.getLatestOrientation());
+        assertEquals(N, robot.getLatestOrientation());
+    }
+
+    @Test
+    public void shouldLeaveScentAfterLost() {
+        Grid grid = new Grid(1, 1);
+        Robot robot = new Robot(grid, 1, 1, N);
+        robot.moveForward();
+        assertTrue(robot.isLost());
+
+        Set<Scent> scents = grid.getScents();
+        assertEquals(1, scents.size());
+        assertThat(scents, hasItem(samePropertyValuesAs(new Scent(1, 1, N))));
     }
 
 }
