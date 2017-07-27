@@ -13,4 +13,18 @@ public class RobotTest {
         assertEquals(Orientation.E, robot.getOrientation());
     }
 
+    @Test
+    public void shouldRotateLeft() {
+        Robot robot = new Robot(1, 1, Orientation.E);
+        robot.rotateLeft();
+        assertEquals(Orientation.N, robot.getOrientation());
+    }
+
+    @Test
+    public void shouldRotateRight() {
+        Robot robot = new Robot(1, 1, Orientation.E);
+        robot.rotateRight();
+        assertEquals(Orientation.S, robot.getOrientation());
+    }
+
 }

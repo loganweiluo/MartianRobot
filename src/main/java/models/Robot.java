@@ -23,4 +23,12 @@ public class Robot {
     public Orientation getOrientation() {
         return orientation;
     }
+
+    public void rotateLeft() {
+        this.orientation = this.orientation.rotateLeft();
+    }
+
+    public void rotateRight() {
+        this.orientation = this.orientation.rotateRight();
+    }
 }
