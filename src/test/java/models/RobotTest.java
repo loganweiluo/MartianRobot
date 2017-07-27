@@ -186,4 +186,20 @@ public class RobotTest {
         assertEquals(3, robot.getLatestY());
         assertEquals(S, robot.getLatestOrientation());
     }
+
+    @Test
+    public void shouldReturnCurrentStatus() {
+        Grid grid = new Grid(5, 3);
+        Robot robot = new Robot(grid, 1, 1, E);
+        robot.takeCommands("RFRFRFRF");
+        assertEquals("1 1 E", robot.getCurrentStatus());
+    }
+
+    @Test
+    public void shouldReturnCurrentStatusWhenLost() {
+        Grid grid = new Grid(5, 3);
+        Robot robot = new Robot(grid, 3, 2, N);
+        robot.takeCommands("FRRFLLFFRRFLL");
+        assertEquals("3 3 N LOST", robot.getCurrentStatus());
+    }
 }

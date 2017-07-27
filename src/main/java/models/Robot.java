@@ -75,12 +75,12 @@ public class Robot {
                         break;
                 }
             }
-            if (!isLost()) {
+            if (isLost()) {
+                grid.addScent(new Scent(lastSeenX, lastSeenY, lastSeenOrientation));
+            } else {
                 this.lastSeenX = this.x;
                 this.lastSeenY = this.y;
                 this.lastSeenOrientation = this.orientation;
-            } else {
-                grid.addScent(new Scent(lastSeenX, lastSeenY, lastSeenOrientation));
             }
         }
     }
