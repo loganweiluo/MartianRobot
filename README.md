@@ -1,13 +1,13 @@
 **Martian Robot**
 
-**To run the app**
+**To run the app**</br>
 Clone this git repo. 
 Make sure Java is installed on your environment.
 From the MartianRobots folder, run: </br>
 java -cp Martian-robot-1.0-SNAPSHOT.jar Main
 
 
-**To run the test**
+**To run the test**</br>
 Make sure Maven is installed on your environment.
 From the MartianRobots folder, run: </br>
 mvn test
